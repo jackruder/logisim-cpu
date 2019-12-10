@@ -34,7 +34,6 @@ The supported R-type instructions are listed below with their respective func fi
 - sub	: 0110
 - slt	: 0111
 - nor	: 1100
-- jr	: 1110 (NOT YET)
 
 #### I-Type Instructions
 I-type instructions are broken up as such
@@ -61,4 +60,4 @@ The supported J-type instructions are listed below with their respective opcodes
 
 - j	: 001
 - jal	: 110
-
+- jr	: 111
