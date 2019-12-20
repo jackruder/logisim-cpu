@@ -132,7 +132,7 @@ def build_inst(line, d, n):
                     imm = extendhex(inst_last[1], 2)[2:]
                 else:
                     imm = extendhex(hex(int(inst_last[1])), 2)[2:]
-                return build_i(ops[inst], regs[reg[0]], regs[reg[1]], imm)
+                return build_i(ops[inst], regs[reg[1]], regs[reg[0]], imm)
             else:
                 imm = extendhex(hex(int(offset)),2)[2:]
                 return build_i(ops[inst], regs[reg[1]], regs[reg[0]], imm)
@@ -174,16 +174,28 @@ def assemble(fi):
             c += 1
     c = 0
     newlines = []
+    newlines.append(" \n")
+    count = 0
+    newline = ""
     for i in range(numlines):
-
         line = lines[i]
-        print("'",line,"'")
         if len(line) < 3:
             pass
         else:
             inst = str(build_inst(line, addresses, c))
-            print(inst)
-            newlines.append(inst + "\n")
+            if i == (numlines-1):
+                newline = newline + (inst[2:] + "\n")
+                newlines.append(newline)
+                count = 0
+                newline = ""
+            elif count < 7:
+                newline = newline + (inst[2:] + " ")
+            else:
+                newline = newline + (inst[2:] + "\n")
+                newlines.append(newline)
+                count = 0
+                newline = ""
+
             c += 1
     w.writelines(newlines)
     f.close()
