@@ -78,6 +78,19 @@ regs = {
 
 }
 
+def twos_comp(val, bits):
+    if (val & (1 << (bits - 1))) != 0:
+        val = val - (1 << bits)
+    return val
+
+def int2Hex(num):
+    h = '%08x' % (num + (1<<32) & ((1 << 32)-1))
+    bs = []
+    for i in range(0,4):
+        bs.append('0x' + h[i * 2: i * 2 + 2])
+    return bs[::-1][0]
+
+
 def build_r(rs, rt, rd, func):
     val = "0x0"
     val += rs
@@ -124,7 +137,7 @@ def build_inst(line, d, n):
     if itype[inst]:
         imm = ""
         if inst == "beq":
-            imm = extendhex(d[inst_last[1]],2)[2:]
+            imm = int2Hex((int(d[inst_last[1]], 16) - n - 1))[2:]
             return build_i(ops[inst], regs[reg[0]], regs[reg[1]], imm)
         else:
             if len(inst_last) == 2:
